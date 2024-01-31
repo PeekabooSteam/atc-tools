@@ -90,7 +90,7 @@ export class ATCPlugin implements OlympusPlugin {
                         <div data-purpose="actual speed">?</div>
                     </div>
                 </div>
-k
+
                 <div class="atc-strip-runway">
                     <div class="ol-select narrow" data-purpose="runway">
                         <div class="ol-select-value">RWY</div>
@@ -109,7 +109,7 @@ k
 
     initialize(app: OlympusApp) {
         this.#app = app;
-        this.#ejs = this.#app.getTemplateEngine();
+        this.#ejs = this.#app.getTemplateManger().getTemplateEngine();
         this.#leaflet = this.#app.getMap().getLeaflet();
         this.#utilities = this.#app.getUtilities();
 
@@ -141,7 +141,7 @@ k
             "useUnitInfoPanel": false
         });
 
-        console.log(contextManager.get(this.#contextName));
+        this.#unitContextMenu = contextManager.get(this.#contextName).getContextMenuManager().get("unit");
 
         this.#element = document.createElement("div");
         this.#element.id = "atc-panel";
@@ -246,26 +246,6 @@ k
         this.#createStrip(unitID);
     }
 
-    #airbaseChanged() {
-        //  Hide all
-        this.getStripboard().querySelectorAll(":scope > li").forEach(el => el.classList.add("hide"));
-
-        this.getRunwayDisplay().innerHTML = "";
-        const airbaseName = this.#airbaseDropdown.getValue();
-        this.#selectedAirbase = (airbaseName === "") ? null : this.#airbases[airbaseName];
-        this.#unitContextMenu.getContainer()?.classList.toggle("no-airbase", !this.#selectedAirbase);
-        if (!this.#selectedAirbase) return;
-
-        this.getRunwayDisplay().innerHTML = this.#ejs.render(this.#templates.runways, this.#selectedAirbase.getChartData());
-
-        const activeStripsAtThisAirbase = this.#strips[this.#selectedAirbase.getName()];
-        if (activeStripsAtThisAirbase) {
-            Object.values(activeStripsAtThisAirbase).sort((stripA: Strip, stripB: Strip) => {
-                return (stripA.getPosition() > stripB.getPosition()) ? 1 : -1
-            }).forEach(strip => strip.getElement().classList.remove("hide"));
-        }
-    }
-
     #createStrip(unitID: number) {
         const unit = this.#app.getUnitsManager().getUnitByID(unitID);
         if (!unit) return false;
@@ -298,7 +278,6 @@ k
             } else {
                 runwayHeadings.unshift("---");
             }
-
             strip.setRunwayDropdown(this.#panel.createDropdown({
                 "ID": runway,
                 "callback": (value: string) => {
@@ -470,7 +449,24 @@ k
 
             this.#airbaseDropdown = this.#panel.createDropdown({
                 "ID": "atc-airbase-select",
-                "callback": (value: string) => this.#airbaseChanged(),
+                "callback": (value: string) => {
+                    //  Hide all    
+                    this.getStripboard().querySelectorAll(":scope > li").forEach(el => el.classList.add("hide"));
+                    this.getRunwayDisplay().innerHTML = "";
+                    const airbaseName = value;
+                    this.#selectedAirbase = (airbaseName === "") ? null : this.#airbases[airbaseName];
+                    this.#unitContextMenu.getContainer()?.classList.toggle("no-airbase", !this.#selectedAirbase);
+                    if (!this.#selectedAirbase) return;
+
+                    this.getRunwayDisplay().innerHTML = this.#ejs.render(this.#templates.runways, this.#selectedAirbase.getChartData());
+
+                    const activeStripsAtThisAirbase = this.#strips[this.#selectedAirbase.getName()];
+                    if (activeStripsAtThisAirbase) {
+                        Object.values(activeStripsAtThisAirbase).sort((stripA: Strip, stripB: Strip) => {
+                            return (stripA.getPosition() > stripB.getPosition()) ? 1 : -1
+                        }).forEach(strip => strip.getElement().classList.remove("hide"));
+                    }
+                },
                 "options": airbaseOptions,
                 "defaultText": "Select an airbase"
             })

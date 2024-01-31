@@ -1179,92 +1179,26 @@ var __disposeResources;
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],8:[function(require,module,exports){
 "use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _Strip_airbase, _Strip_assignedAlt, _Strip_assignedSpeed, _Strip_element, _Strip_map, _Strip_polyline, _Strip_position, _Strip_runway, _Strip_runwayDropdown, _Strip_unitID, _ATCPlugin_instances, _ATCPlugin_airbaseDropdown, _ATCPlugin_airbases, _ATCPlugin_app, _ATCPlugin_contextName, _ATCPlugin_element, _ATCPlugin_ejs, _ATCPlugin_imagePath, _ATCPlugin_leaflet, _ATCPlugin_panel, _ATCPlugin_runwayDisplay, _ATCPlugin_selectedAirbase, _ATCPlugin_stripboard, _ATCPlugin_strips, _ATCPlugin_templates, _ATCPlugin_unitContextMenu, _ATCPlugin_updatesInterval, _ATCPlugin_utilities, _ATCPlugin_airbaseChanged, _ATCPlugin_createStrip, _ATCPlugin_injectSVGs, _ATCPlugin_populateAirbases;
+var _ATCPlugin_instances, _ATCPlugin_airbaseDropdown, _ATCPlugin_airbases, _ATCPlugin_app, _ATCPlugin_contextName, _ATCPlugin_element, _ATCPlugin_ejs, _ATCPlugin_imagePath, _ATCPlugin_leaflet, _ATCPlugin_panel, _ATCPlugin_runwayDisplay, _ATCPlugin_selectedAirbase, _ATCPlugin_stripboard, _ATCPlugin_strips, _ATCPlugin_templates, _ATCPlugin_unitContextMenu, _ATCPlugin_updatesInterval, _ATCPlugin_utilities, _ATCPlugin_createStrip, _ATCPlugin_injectSVGs, _ATCPlugin_populateAirbases;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ATCPlugin = void 0;
 const svg_injector_1 = require("@tanem/svg-injector");
 const sortablejs_1 = __importDefault(require("sortablejs"));
-class Strip {
-    constructor(map, stripData) {
-        _Strip_airbase.set(this, void 0);
-        _Strip_assignedAlt.set(this, -1);
-        _Strip_assignedSpeed.set(this, -1);
-        _Strip_element.set(this, void 0);
-        _Strip_map.set(this, void 0);
-        _Strip_polyline.set(this, void 0);
-        _Strip_position.set(this, void 0);
-        _Strip_runway.set(this, void 0);
-        _Strip_runwayDropdown.set(this, void 0);
-        _Strip_unitID.set(this, void 0);
-        __classPrivateFieldSet(this, _Strip_airbase, stripData.airbase, "f");
-        __classPrivateFieldSet(this, _Strip_element, stripData.stripElement, "f");
-        __classPrivateFieldSet(this, _Strip_map, map, "f");
-        __classPrivateFieldSet(this, _Strip_position, stripData.position, "f");
-        __classPrivateFieldSet(this, _Strip_runwayDropdown, stripData.runwayDropdown, "f");
-        __classPrivateFieldSet(this, _Strip_unitID, stripData.unitID, "f");
-    }
-    delete() {
-        __classPrivateFieldGet(this, _Strip_element, "f").remove();
-        __classPrivateFieldGet(this, _Strip_polyline, "f").remove();
-    }
-    getAssignedAltitude() {
-        return __classPrivateFieldGet(this, _Strip_assignedAlt, "f");
-    }
-    getAssignedSpeed() {
-        return __classPrivateFieldGet(this, _Strip_assignedSpeed, "f");
-    }
-    getElement() {
-        return __classPrivateFieldGet(this, _Strip_element, "f");
-    }
-    getMap() {
-        return __classPrivateFieldGet(this, _Strip_map, "f");
-    }
-    getPolyline() {
-        return __classPrivateFieldGet(this, _Strip_polyline, "f");
-    }
-    getPosition() {
-        return __classPrivateFieldGet(this, _Strip_position, "f");
-    }
-    getUnitID() {
-        return __classPrivateFieldGet(this, _Strip_unitID, "f");
-    }
-    removePolyline() {
-        this.getPolyline().remove();
-    }
-    setAssignedAltitude(altitude) {
-        __classPrivateFieldSet(this, _Strip_assignedAlt, altitude, "f");
-    }
-    setAssignedSpeed(speed) {
-        __classPrivateFieldSet(this, _Strip_assignedSpeed, speed, "f");
-    }
-    setPolyline(polyline) {
-        __classPrivateFieldSet(this, _Strip_polyline, polyline, "f");
-    }
-    setPosition(position) {
-        __classPrivateFieldSet(this, _Strip_position, position, "f");
-    }
-    setRunway(runway) {
-        __classPrivateFieldSet(this, _Strip_runway, runway, "f");
-    }
-    setRunwayDropdown(runwayDropdown) {
-        __classPrivateFieldSet(this, _Strip_runwayDropdown, runwayDropdown, "f");
-    }
-}
-_Strip_airbase = new WeakMap(), _Strip_assignedAlt = new WeakMap(), _Strip_assignedSpeed = new WeakMap(), _Strip_element = new WeakMap(), _Strip_map = new WeakMap(), _Strip_polyline = new WeakMap(), _Strip_position = new WeakMap(), _Strip_runway = new WeakMap(), _Strip_runwayDropdown = new WeakMap(), _Strip_unitID = new WeakMap();
+const strip_1 = require("./strip");
 class ATCPlugin {
     constructor() {
         _ATCPlugin_instances.add(this);
@@ -1347,7 +1281,7 @@ class ATCPlugin {
                         <div data-purpose="actual speed">?</div>
                     </div>
                 </div>
-k
+
                 <div class="atc-strip-runway">
                     <div class="ol-select narrow" data-purpose="runway">
                         <div class="ol-select-value">RWY</div>
@@ -1364,7 +1298,7 @@ k
     initialize(app) {
         var _a, _b;
         __classPrivateFieldSet(this, _ATCPlugin_app, app, "f");
-        __classPrivateFieldSet(this, _ATCPlugin_ejs, __classPrivateFieldGet(this, _ATCPlugin_app, "f").getTemplateEngine(), "f");
+        __classPrivateFieldSet(this, _ATCPlugin_ejs, __classPrivateFieldGet(this, _ATCPlugin_app, "f").getTemplateManger().getTemplateEngine(), "f");
         __classPrivateFieldSet(this, _ATCPlugin_leaflet, __classPrivateFieldGet(this, _ATCPlugin_app, "f").getMap().getLeaflet(), "f");
         __classPrivateFieldSet(this, _ATCPlugin_utilities, __classPrivateFieldGet(this, _ATCPlugin_app, "f").getUtilities(), "f");
         const unitContextMenu = document.createElement("div");
@@ -1378,7 +1312,6 @@ k
         `;
         document.body.appendChild(unitContextMenu);
         const contextManager = __classPrivateFieldGet(this, _ATCPlugin_app, "f").getContextManager();
-        //  TODO: contextManager.createContextMenu()
         contextManager.add(__classPrivateFieldGet(this, _ATCPlugin_contextName, "f"), {
             "allowUnitCopying": false,
             "allowUnitPasting": false,
@@ -1392,8 +1325,7 @@ k
             "useUnitControlPanel": false,
             "useUnitInfoPanel": false
         });
-        console.log(contextManager.get(__classPrivateFieldGet(this, _ATCPlugin_contextName, "f")));
-        //  TODO: map.createPanel()
+        __classPrivateFieldSet(this, _ATCPlugin_unitContextMenu, contextManager.get(__classPrivateFieldGet(this, _ATCPlugin_contextName, "f")).getContextMenuManager().get("unit"), "f");
         __classPrivateFieldSet(this, _ATCPlugin_element, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _ATCPlugin_element, "f").id = "atc-panel";
         __classPrivateFieldGet(this, _ATCPlugin_element, "f").className = "ol-panel hide";
@@ -1463,7 +1395,7 @@ k
             if (!airbase)
                 return false;
             const strip = __classPrivateFieldGet(this, _ATCPlugin_strips, "f")[airbase.getName()][ev.detail.unitID];
-            if (strip instanceof Strip) {
+            if (strip instanceof strip_1.Strip) {
                 strip.delete();
                 delete __classPrivateFieldGet(this, _ATCPlugin_strips, "f")[airbase.getName()][ev.detail.unitID];
             }
@@ -1583,24 +1515,7 @@ k
     }
 }
 exports.ATCPlugin = ATCPlugin;
-_ATCPlugin_airbaseDropdown = new WeakMap(), _ATCPlugin_airbases = new WeakMap(), _ATCPlugin_app = new WeakMap(), _ATCPlugin_contextName = new WeakMap(), _ATCPlugin_element = new WeakMap(), _ATCPlugin_ejs = new WeakMap(), _ATCPlugin_imagePath = new WeakMap(), _ATCPlugin_leaflet = new WeakMap(), _ATCPlugin_panel = new WeakMap(), _ATCPlugin_runwayDisplay = new WeakMap(), _ATCPlugin_selectedAirbase = new WeakMap(), _ATCPlugin_stripboard = new WeakMap(), _ATCPlugin_strips = new WeakMap(), _ATCPlugin_templates = new WeakMap(), _ATCPlugin_unitContextMenu = new WeakMap(), _ATCPlugin_updatesInterval = new WeakMap(), _ATCPlugin_utilities = new WeakMap(), _ATCPlugin_instances = new WeakSet(), _ATCPlugin_airbaseChanged = function _ATCPlugin_airbaseChanged() {
-    var _a;
-    //  Hide all
-    this.getStripboard().querySelectorAll(":scope > li").forEach(el => el.classList.add("hide"));
-    this.getRunwayDisplay().innerHTML = "";
-    const airbaseName = __classPrivateFieldGet(this, _ATCPlugin_airbaseDropdown, "f").getValue();
-    __classPrivateFieldSet(this, _ATCPlugin_selectedAirbase, (airbaseName === "") ? null : __classPrivateFieldGet(this, _ATCPlugin_airbases, "f")[airbaseName], "f");
-    (_a = __classPrivateFieldGet(this, _ATCPlugin_unitContextMenu, "f").getContainer()) === null || _a === void 0 ? void 0 : _a.classList.toggle("no-airbase", !__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f"));
-    if (!__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f"))
-        return;
-    this.getRunwayDisplay().innerHTML = __classPrivateFieldGet(this, _ATCPlugin_ejs, "f").render(__classPrivateFieldGet(this, _ATCPlugin_templates, "f").runways, __classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f").getChartData());
-    const activeStripsAtThisAirbase = __classPrivateFieldGet(this, _ATCPlugin_strips, "f")[__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f").getName()];
-    if (activeStripsAtThisAirbase) {
-        Object.values(activeStripsAtThisAirbase).sort((stripA, stripB) => {
-            return (stripA.getPosition() > stripB.getPosition()) ? 1 : -1;
-        }).forEach(strip => strip.getElement().classList.remove("hide"));
-    }
-}, _ATCPlugin_createStrip = function _ATCPlugin_createStrip(unitID) {
+_ATCPlugin_airbaseDropdown = new WeakMap(), _ATCPlugin_airbases = new WeakMap(), _ATCPlugin_app = new WeakMap(), _ATCPlugin_contextName = new WeakMap(), _ATCPlugin_element = new WeakMap(), _ATCPlugin_ejs = new WeakMap(), _ATCPlugin_imagePath = new WeakMap(), _ATCPlugin_leaflet = new WeakMap(), _ATCPlugin_panel = new WeakMap(), _ATCPlugin_runwayDisplay = new WeakMap(), _ATCPlugin_selectedAirbase = new WeakMap(), _ATCPlugin_stripboard = new WeakMap(), _ATCPlugin_strips = new WeakMap(), _ATCPlugin_templates = new WeakMap(), _ATCPlugin_unitContextMenu = new WeakMap(), _ATCPlugin_updatesInterval = new WeakMap(), _ATCPlugin_utilities = new WeakMap(), _ATCPlugin_instances = new WeakSet(), _ATCPlugin_createStrip = function _ATCPlugin_createStrip(unitID) {
     const unit = __classPrivateFieldGet(this, _ATCPlugin_app, "f").getUnitsManager().getUnitByID(unitID);
     if (!unit)
         return false;
@@ -1614,7 +1529,7 @@ _ATCPlugin_airbaseDropdown = new WeakMap(), _ATCPlugin_airbases = new WeakMap(),
         "unit": unit
     });
     stripElement.setAttribute("data-unit-id", unitID + "");
-    const strip = new Strip(__classPrivateFieldGet(this, _ATCPlugin_app, "f").getMap(), {
+    const strip = new strip_1.Strip(__classPrivateFieldGet(this, _ATCPlugin_app, "f").getMap(), {
         "airbase": airbase,
         "position": Object.keys(stripsAtThisAirbase).length,
         "stripElement": stripElement,
@@ -1685,14 +1600,31 @@ _ATCPlugin_airbaseDropdown = new WeakMap(), _ATCPlugin_airbases = new WeakMap(),
         }, []);
         __classPrivateFieldSet(this, _ATCPlugin_airbaseDropdown, __classPrivateFieldGet(this, _ATCPlugin_panel, "f").createDropdown({
             "ID": "atc-airbase-select",
-            "callback": (value) => __classPrivateFieldGet(this, _ATCPlugin_instances, "m", _ATCPlugin_airbaseChanged).call(this),
+            "callback": (value) => {
+                var _a;
+                //  Hide all    
+                this.getStripboard().querySelectorAll(":scope > li").forEach(el => el.classList.add("hide"));
+                this.getRunwayDisplay().innerHTML = "";
+                const airbaseName = value;
+                __classPrivateFieldSet(this, _ATCPlugin_selectedAirbase, (airbaseName === "") ? null : __classPrivateFieldGet(this, _ATCPlugin_airbases, "f")[airbaseName], "f");
+                (_a = __classPrivateFieldGet(this, _ATCPlugin_unitContextMenu, "f").getContainer()) === null || _a === void 0 ? void 0 : _a.classList.toggle("no-airbase", !__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f"));
+                if (!__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f"))
+                    return;
+                this.getRunwayDisplay().innerHTML = __classPrivateFieldGet(this, _ATCPlugin_ejs, "f").render(__classPrivateFieldGet(this, _ATCPlugin_templates, "f").runways, __classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f").getChartData());
+                const activeStripsAtThisAirbase = __classPrivateFieldGet(this, _ATCPlugin_strips, "f")[__classPrivateFieldGet(this, _ATCPlugin_selectedAirbase, "f").getName()];
+                if (activeStripsAtThisAirbase) {
+                    Object.values(activeStripsAtThisAirbase).sort((stripA, stripB) => {
+                        return (stripA.getPosition() > stripB.getPosition()) ? 1 : -1;
+                    }).forEach(strip => strip.getElement().classList.remove("hide"));
+                }
+            },
             "options": airbaseOptions,
             "defaultText": "Select an airbase"
         }), "f");
     });
 };
 
-},{"@tanem/svg-injector":1,"sortablejs":6}],9:[function(require,module,exports){
+},{"./strip":10,"@tanem/svg-injector":1,"sortablejs":6}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const atcplugin_1 = require("./atcplugin");
@@ -1700,4 +1632,89 @@ globalThis.getOlympusPlugin = () => {
     return new atcplugin_1.ATCPlugin();
 };
 
-},{"./atcplugin":8}]},{},[9]);
+},{"./atcplugin":8}],10:[function(require,module,exports){
+"use strict";
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _Strip_airbase, _Strip_assignedAlt, _Strip_assignedSpeed, _Strip_element, _Strip_map, _Strip_polyline, _Strip_position, _Strip_runway, _Strip_runwayDropdown, _Strip_unitID;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Strip = void 0;
+class Strip {
+    constructor(map, stripData) {
+        _Strip_airbase.set(this, void 0);
+        _Strip_assignedAlt.set(this, -1);
+        _Strip_assignedSpeed.set(this, -1);
+        _Strip_element.set(this, void 0);
+        _Strip_map.set(this, void 0);
+        _Strip_polyline.set(this, void 0);
+        _Strip_position.set(this, void 0);
+        _Strip_runway.set(this, void 0);
+        _Strip_runwayDropdown.set(this, void 0);
+        _Strip_unitID.set(this, void 0);
+        __classPrivateFieldSet(this, _Strip_airbase, stripData.airbase, "f");
+        __classPrivateFieldSet(this, _Strip_element, stripData.stripElement, "f");
+        __classPrivateFieldSet(this, _Strip_map, map, "f");
+        __classPrivateFieldSet(this, _Strip_position, stripData.position, "f");
+        __classPrivateFieldSet(this, _Strip_runwayDropdown, stripData.runwayDropdown, "f");
+        __classPrivateFieldSet(this, _Strip_unitID, stripData.unitID, "f");
+    }
+    delete() {
+        __classPrivateFieldGet(this, _Strip_element, "f").remove();
+        __classPrivateFieldGet(this, _Strip_polyline, "f").remove();
+    }
+    getAssignedAltitude() {
+        return __classPrivateFieldGet(this, _Strip_assignedAlt, "f");
+    }
+    getAssignedSpeed() {
+        return __classPrivateFieldGet(this, _Strip_assignedSpeed, "f");
+    }
+    getElement() {
+        return __classPrivateFieldGet(this, _Strip_element, "f");
+    }
+    getMap() {
+        return __classPrivateFieldGet(this, _Strip_map, "f");
+    }
+    getPolyline() {
+        return __classPrivateFieldGet(this, _Strip_polyline, "f");
+    }
+    getPosition() {
+        return __classPrivateFieldGet(this, _Strip_position, "f");
+    }
+    getUnitID() {
+        return __classPrivateFieldGet(this, _Strip_unitID, "f");
+    }
+    removePolyline() {
+        this.getPolyline().remove();
+    }
+    setAssignedAltitude(altitude) {
+        __classPrivateFieldSet(this, _Strip_assignedAlt, altitude, "f");
+    }
+    setAssignedSpeed(speed) {
+        __classPrivateFieldSet(this, _Strip_assignedSpeed, speed, "f");
+    }
+    setPolyline(polyline) {
+        __classPrivateFieldSet(this, _Strip_polyline, polyline, "f");
+    }
+    setPosition(position) {
+        __classPrivateFieldSet(this, _Strip_position, position, "f");
+    }
+    setRunway(runway) {
+        __classPrivateFieldSet(this, _Strip_runway, runway, "f");
+    }
+    setRunwayDropdown(runwayDropdown) {
+        __classPrivateFieldSet(this, _Strip_runwayDropdown, runwayDropdown, "f");
+    }
+}
+exports.Strip = Strip;
+_Strip_airbase = new WeakMap(), _Strip_assignedAlt = new WeakMap(), _Strip_assignedSpeed = new WeakMap(), _Strip_element = new WeakMap(), _Strip_map = new WeakMap(), _Strip_polyline = new WeakMap(), _Strip_position = new WeakMap(), _Strip_runway = new WeakMap(), _Strip_runwayDropdown = new WeakMap(), _Strip_unitID = new WeakMap();
+
+},{}]},{},[9]);
