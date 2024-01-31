@@ -1,0 +1,199 @@
+#atc-panel {
+    align-self: center;
+    display: flex;
+    flex-flow: column nowrap;
+    font-size: 13px;
+    justify-self: flex-start;
+    height:691px;
+    position: absolute;
+    left: 10px;
+    row-gap: 12px;
+    z-index: 999;
+}
+
+#atc-panel .ol-select.narrow .ol-select-value {
+    height:30px;
+}
+
+#atc-panel-header {
+    align-items: center;
+    display:flex;
+    justify-content: space-between;
+}
+
+#atc-panel-header > div {
+    align-items: center;
+    column-gap: 4px;
+    display:flex;
+    flex-direction: row;
+}
+
+#atc-panel-header button {
+    border:1px solid var(--background-grey);
+}
+
+#atc-panel-header svg * {
+    fill: white;
+}
+
+#atc-stripboard {
+    display:flex;
+    flex-direction: column;
+    list-style: none;
+    height:578px;
+    margin:0;
+    padding:0 6px 0 0;
+    row-gap: 6px;
+    width:420px;
+}
+
+.atc-strip {
+    align-items: center;
+    background-color: var(--background-steel);
+    border:1px solid var(--secondary-lighter-grey);
+    border-radius: var(--border-radius-sm);
+    column-gap: 4px;
+    display:flex;
+    flex-direction: column;
+    margin:0;
+    padding:4px;
+}
+
+.atc-strip[data-declare-emergency] {
+    background-color:ffd900;
+    color:var(--background-steel);
+}
+
+#atc-runway-data {
+    display:grid;
+    gap:8px;
+    grid-template-columns: repeat(2, 1fr);
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+
+#atc-runway-data li {
+    background-color: #ffffff10;
+}
+
+.atc-runway {
+    align-items: center;
+    border:1px solid white;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.atc-runway .heading {
+    align-items: center;
+    column-gap: 8px;
+    display:flex;
+    flex-direction: row;
+    padding:4px;
+}
+
+.atc-runway .heading:first-of-type {
+    flex-direction: row-reverse;
+}
+
+.atc-strip .atc-strip-top-bar {
+    align-items: center;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
+}
+
+.atc-strip .atc-strip-handle {
+    align-items: center;
+    display:flex;
+}
+
+.atc-strip .atc-strip-handle:hover {
+    cursor:grab;
+}
+
+.atc-strip .atc-strip-handle svg {
+    margin:0 4px;
+}
+
+.atc-strip .atc-strip-handle svg * {
+    fill:white;
+}
+
+.atc-strip .atc-strip-top-bar .atc-strip-buttons {
+    align-items: center;
+    column-gap: 4px;
+    display:flex;
+    flex-direction: row;
+}
+
+.atc-strip button[data-on-click="atcDeleteStrip"] svg * {
+    fill:#cc0000;
+}
+
+.atc-strip button[data-on-click="atcDeclareEmergency"] svg * {
+    fill:#ffd900;
+}
+
+.atc-strip[data-declare-emergency] button[data-on-click="atcDeclareEmergency"]:hover svg * {
+    fill:var(--background-steel);
+}
+
+.atc-strip .atc-strip-info {
+    align-self:center;
+    column-gap: 12px;
+    display:flex;
+    flex-direction: row;
+}
+
+.atc-strip .atc-strip-info input {
+    border:1px solid transparent;
+}
+
+.atc-strip .atc-strip-info .assigned-actual {
+    column-gap: 6px;
+    display:flex;
+    flex-direction: row;
+    row-gap: 4px;
+}
+
+.atc-strip .info-cell {
+    display:flex;
+    flex-direction: column;
+    row-gap: 2px;
+}
+
+.atc-strip .info-cell > * {
+    text-align: center;
+}
+
+.atc-strip div[data-purpose] {
+    border-radius: var(--border-radius-xs);
+    line-height: 22px;
+    padding:0 4px;
+}
+
+.atc-strip[data-altitude-warning] .atc-strip-info div[data-purpose="actual altitude"],
+.atc-strip[data-speed-warning] .atc-strip-info div[data-purpose="actual speed"] {
+    background-color: #900;
+    color:white;
+}
+
+.atc-strip .atc-strip-runway {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    row-gap: 4px;
+}
+
+.atc-strip .atc-strip-runway > :first-child {
+    text-align: center;
+}
+
+#atc-unit-context-menu.no-airbase .ol-panel > :not(.no-airbase),
+#atc-unit-context-menu:not(.no-airbase) .ol-panel > .no-airbase {
+    display:none;
+}

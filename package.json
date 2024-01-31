@@ -1,0 +1,16 @@
+{
+  "name": "ATCPlugin",
+  "version": "v0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "browserify ./src/index.ts -p [ tsify --noImplicitAny] > index.js && copy.bat"
+  },
+  "devDependencies": {
+    "@tanem/svg-injector": "^10.1.68",
+    "@types/node": "^20.10.6",
+    "@types/sortablejs": "^1.15.4",
+    "browserify": "^17.0.0",
+    "sortablejs": "^1.15.0",
+    "tsify": "^5.0.4"
+  }
+}
