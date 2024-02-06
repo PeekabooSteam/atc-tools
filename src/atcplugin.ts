@@ -9,6 +9,7 @@ import { Utilities } from "other/utilities";
 import Sortable, { SortableEvent } from "sortablejs";
 import { Panel } from "panels/panel";
 import { Strip } from "./strip";
+import { TemplateManager } from "template/templatemanager";
 
 export class ATCPlugin implements OlympusPlugin {
     #airbaseDropdown!: Dropdown;
@@ -16,7 +17,6 @@ export class ATCPlugin implements OlympusPlugin {
     #app!: OlympusApp;
     #contextName = "atc";
     #element!: HTMLElement;
-    #ejs!: any;
     #imagePath = "/plugins/atcplugin/images/";
     #leaflet!: any;
     #panel!: Panel;
@@ -24,6 +24,7 @@ export class ATCPlugin implements OlympusPlugin {
     #selectedAirbase: Airbase | null = null;
     #stripboard!: HTMLElement;
     #strips: { [key: string]: { [key: string]: Strip } } = {};
+    #templateManager!: TemplateManager;
     #templates: { [key: string]: string } = {
         "panel": `
             <div id="atc-panel-header">
@@ -109,34 +110,83 @@ export class ATCPlugin implements OlympusPlugin {
 
     initialize(app: OlympusApp) {
         this.#app = app;
-        this.#ejs = this.#app.getTemplateManger().getTemplateEngine();
+        this.#templateManager = this.#app.getTemplateManger();
         this.#leaflet = this.#app.getMap().getLeaflet();
         this.#utilities = this.#app.getUtilities();
 
+        //  Airbase spawn context menu
+        const airbaseSpawnContextMenu = document.createElement("div");
+        airbaseSpawnContextMenu.id = "atc-airbase-context-menu";
+        airbaseSpawnContextMenu.className = "ol-context-menu no-airbase";
+        airbaseSpawnContextMenu.innerHTML = `
+            <div class="ol-panel">
+                <h3>ATC Airbase CM</h3>
+                <div class="atc-airbase-chart-data"></div>
+                <button id="atc-control-this-airbase" data-on-click="atcControlThisAirbase">Control this airbase</button>
+            </div>
+        `;
+        document.body.appendChild(airbaseSpawnContextMenu);
+
+        //  Unit context menu
         const unitContextMenu = document.createElement("div");
         unitContextMenu.id = "atc-unit-context-menu";
         unitContextMenu.className = "ol-context-menu no-airbase";
         unitContextMenu.innerHTML = `
             <div class="ol-panel">
+                <h3>ATC Unit CM</h3>
                 <p class="no-airbase">No airbase selected</p>
+                <div class="atc-airbase-chart-data"></div>
                 <button id="atc-add-to-approach" data-on-click="atcAddToApproach">Add to approach</button>
             </div>
         `;
         document.body.appendChild(unitContextMenu);
 
-
         const contextManager = this.#app.getContextManager();
-
         contextManager.add(this.#contextName, {
             "allowUnitCopying": false,
             "allowUnitPasting": false,
             "contextMenus": {
+                "airbase": {
+                    "id": "atc-airbase-context-menu",
+                    "onBeforeShow": (menu: ContextMenu) => {
+                        const airbase = this.getSelectedAirbase();
+                        const el = menu.getContainer()?.querySelector(".atc-airbase-chart-data");
+
+                        if (el instanceof HTMLElement) {
+                            if (airbase) {
+                                menu.getContainer()?.classList.remove("no-airbase");
+                                el.innerHTML = this.#templateManager.renderTemplate("airbaseChartData", {
+                                    "airbase": airbase
+                                });
+                            } else {
+                                menu.getContainer()?.classList.add("no-airbase");
+                            }
+                        }
+                    }
+                },
                 "map": false,
                 "unit": {
-                    "id": "atc-unit-context-menu"
+                    "id": "atc-unit-context-menu",
+                    "onBeforeShow": (menu: ContextMenu) => {
+                        const airbase = this.getSelectedAirbase();
+                        const el = menu.getContainer()?.querySelector(".atc-airbase-chart-data");
+
+                        if (el instanceof HTMLElement) {
+                            if (airbase) {
+                                menu.getContainer()?.classList.remove("no-airbase");
+                            } else {
+                                menu.getContainer()?.classList.add("no-airbase");
+                            }
+                        }
+                    }
                 }
             },
-            "useMouseInfoPanel": false,
+            "onSet": () => {
+                //  TODO: highlight airbase being controlled
+            },
+            "onUnset": () => {
+                this.#resetView();
+            },
             "useUnitControlPanel": false,
             "useUnitInfoPanel": false
         });
@@ -257,7 +307,7 @@ export class ATCPlugin implements OlympusPlugin {
 
         const stripElement = document.createElement("li");
         stripElement.className = "atc-strip";
-        stripElement.innerHTML += this.#ejs.render(this.#templates.strip, {
+        stripElement.innerHTML += this.#templateManager.renderTemplateString(this.#templates.strip, {
             "unit": unit
         });
         stripElement.setAttribute("data-unit-id", unitID + "");
@@ -450,15 +500,15 @@ export class ATCPlugin implements OlympusPlugin {
             this.#airbaseDropdown = this.#panel.createDropdown({
                 "ID": "atc-airbase-select",
                 "callback": (value: string) => {
-                    //  Hide all    
+                    //  Hide all
                     this.getStripboard().querySelectorAll(":scope > li").forEach(el => el.classList.add("hide"));
                     this.getRunwayDisplay().innerHTML = "";
                     const airbaseName = value;
                     this.#selectedAirbase = (airbaseName === "") ? null : this.#airbases[airbaseName];
-                    this.#unitContextMenu.getContainer()?.classList.toggle("no-airbase", !this.#selectedAirbase);
+                    this.#resetView();
                     if (!this.#selectedAirbase) return;
 
-                    this.getRunwayDisplay().innerHTML = this.#ejs.render(this.#templates.runways, this.#selectedAirbase.getChartData());
+                    this.#selectedAirbase.getElement()?.classList.add("atc-controlled");
 
                     const activeStripsAtThisAirbase = this.#strips[this.#selectedAirbase.getName()];
                     if (activeStripsAtThisAirbase) {
@@ -473,6 +523,10 @@ export class ATCPlugin implements OlympusPlugin {
 
         });
 
+    }
+
+    #resetView() {
+        document.querySelectorAll(".atc-controlled").forEach(icon => icon.classList.remove("atc-controlled"));
     }
 
     startUpdates() {

@@ -1,3 +1,9 @@
+.atc-controlled .airbase-icon {
+    background: #ffea33cc;
+    border-radius: 50%;
+    border: 2px solid #b5a400;
+}
+
 #atc-panel {
     align-self: center;
     display: flex;
